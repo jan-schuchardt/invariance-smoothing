@@ -1,0 +1,246 @@
+seml:
+  executable: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/seml/scripts/eval_forward.py
+  conda_environment: invariance_smoothing
+  project_root_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/
+  output_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/logs/slurm_out/eval_forward
+  name: eval_forward_modelnet_rotation_axis_parallel
+
+slurm:
+  experiments_per_job: 1
+  sbatch_options:
+    mem: 16G          # memory
+    cpus-per-task: 8  # num cores
+    time: 0-02:00     # max time, D-HH:MM
+    partition: ['cpu']
+    qos: 'phdcpu'
+
+
+fixed:
+
+  save_dir: /nfs/staff-ssd/schuchaj/pointcloud_invariance_results/eval_forward_rotation
+  seed: 0
+
+  n_datapoints: 10000000
+  n_samples_per_datapoint: 10
+
+  dataset:
+      name: modelnet40
+      data_folder: /nfs/shared/modelnet/modelnet40_normal_resampled
+      val_percentage: 0.2
+
+  pred_sample_loading:
+      collection: invariance_sample_cert
+      exp_id: None
+      restrictions:
+        dataset.name: modelnet40
+      find_std: True
+
+  threat_model_params:
+    norms_delta_params:
+      linspace: False
+      min: 0
+      max: 0.2
+      steps: 10
+    distribution_params:
+        parallel: False
+        axis_parallel: True
+
+  certificate_params:
+    n_samples_clean: 10000
+    n_samples_pert: 10000
+    alpha: 0.001
+
+grid:
+  threat_model_params.distribution_params.angle:
+    type: choice
+    options:
+      - 0.0
+      - 0.1
+      - 0.2
+      - 0.3
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      - 0.9
+      - 1.0
+      - 1.1
+      - 1.2
+      - 1.3
+      - 1.4
+      - 1.5
+      - 1.6
+      - 1.7
+      - 1.8
+      - 1.9
+      - 2.0
+      - 2.2
+      - 2.4
+      - 2.6
+      - 2.8
+      - 3.0
+      - 4.0
+      - 5.0
+      - 6.0
+      - 7.0
+      - 8.0
+      - 9.0
+      - 10.0
+      #- 20.0
+      #- 30.0
+      #- 40.0
+      #- 50.0
+      #- 60.0
+      #- 70.0
+      #- 80.0
+      #- 90.0
+
+  pred_sample_loading.restrictions.train_loading.restrictions.model.model_type:
+    type: choice
+    options:
+      - pointnet
+      - pointnet_attention
+      - dgcnn
+
+#std_0-05_with_translation:
+#  fixed:
+#    std: 0.05
+#    certificate_params.preprocess_translation: True
+#    # certificate_params.baseline_only: False  TODO: Uncomment this for release, was just workaround for config hashing
+#  grid:
+#    threat_model_params.norms_delta_params.values:
+#      type: choice
+#      options:
+#        - [0.025]
+#        - [0.05]
+#        - [0.1]
+#        - [0.15]
+
+std_0-05_baseline_without_translation:
+  fixed:
+    std: 0.05
+    certificate_params.preprocess_translation: False
+    certificate_params.baseline_only: True
+  grid:
+    threat_model_params.norms_delta_params.values:
+      type: choice
+      options:
+        - [0.025]
+        - [0.05]
+        - [0.1]
+        - [0.15]
+
+#std_0-1_with_translation:
+#  fixed:
+#    std: 0.1
+#    certificate_params.preprocess_translation: True
+#    # certificate_params.baseline_only: False  TODO: Uncomment this for release, was just workaround for config hashing
+#  grid:
+#    threat_model_params.norms_delta_params.values:
+#      type: choice
+#      options:
+#        - [0.05]
+#        - [0.1]
+#        - [0.2]
+#        - [0.3]
+
+std_0-1_baseline_without_translation:
+  fixed:
+    std: 0.1
+    certificate_params.preprocess_translation: False
+    certificate_params.baseline_only: True
+  grid:
+    threat_model_params.norms_delta_params.values:
+      type: choice
+      options:
+        - [0.05]
+        - [0.1]
+        - [0.2]
+        - [0.3]
+
+#std_0-15_with_translation:
+#  fixed:
+#    std: 0.15
+#    certificate_params.preprocess_translation: True
+#    # certificate_params.baseline_only: False  TODO: Uncomment this for release, was just workaround for config hashing
+#  grid:
+#    threat_model_params.norms_delta_params.values:
+#      type: choice
+#      options:
+#        - [0.075]
+#        - [0.15]
+#        - [0.3]
+#        - [0.45]
+
+
+std_0-15_baseline_without_translation:
+  fixed:
+    std: 0.15
+    certificate_params.preprocess_translation: False
+    certificate_params.baseline_only: True
+  grid:
+    threat_model_params.norms_delta_params.values:
+      type: choice
+      options:
+        - [0.075]
+        - [0.15]
+        - [0.3]
+        - [0.45]
+
+#std_0-2_with_translation:
+#  fixed:
+#    std: 0.2
+#    certificate_params.preprocess_translation: True
+#    # certificate_params.baseline_only: False  TODO: Uncomment this for release, was just workaround for config hashing
+#  grid:
+#    threat_model_params.norms_delta_params.values:
+#      type: choice
+#      options:
+#        - [0.1]
+#        - [0.2]
+#        - [0.4]
+#        - [0.6]
+
+std_0-2_baseline_without_translation:
+  fixed:
+    std: 0.2
+    certificate_params.preprocess_translation: False
+    certificate_params.baseline_only: True
+  grid:
+    threat_model_params.norms_delta_params.values:
+      type: choice
+      options:
+        - [0.1]
+        - [0.2]
+        - [0.4]
+        - [0.6]
+
+
+#std_0-25_with_translation:
+#  fixed:
+#    std: 0.25
+#    certificate_params.preprocess_translation: True
+#    # certificate_params.baseline_only: False  TODO: Uncomment this for release, was just workaround for config hashing
+#  grid:
+#    threat_model_params.norms_delta_params.values:
+#      type: choice
+#      options:
+#        - [0.125]
+#        - [0.25]
+#        - [0.5]
+#        - [0.75]
+
+std_0-25_baseline_without_translation:
+  fixed:
+    std: 0.25
+    certificate_params.preprocess_translation: False
+    certificate_params.baseline_only: True
+  grid:
+    threat_model_params.norms_delta_params.values:
+      type: choice
+      options:
+        - [0.125]
+        - [0.25]
+        - [0.5]
+        - [0.75]

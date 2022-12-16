@@ -1,0 +1,169 @@
+# This is the script for Fig. 3 and 11
+# i.e. finding the minimum required clean prediction probability to allow certification
+# with parameter values chosen s.t. points corresponding to rotation move in 30° steps.
+
+seml:
+  executable: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/seml/scripts/eval_inverse.py
+  conda_environment: invariance_smoothing
+  project_root_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/
+  output_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/logs/slurm_out/eval_inverse
+  name: eval_inverse_multiple_inner_cross
+
+slurm:
+  experiments_per_job: 1
+  sbatch_options:
+    mem: 16G          # memory
+    cpus-per-task: 8  # num cores
+    time: 0-00:20     # max time, D-HH:MM
+    partition: ['cpu']
+    qos: 'phdcpu'
+
+
+fixed:
+
+  save_dir: /nfs/staff-ssd/schuchaj/pointcloud_invariance_results/eval_inverse_multiple_inner_cross
+  seed: 0
+
+  n_samples_clean: 10000
+  n_samples_pert: 10000
+  alpha: 0.001
+
+  norms_clean_params:
+        linspace: False
+        min: 0
+        max: 1
+        steps: 10
+
+  norms_delta_params:
+      linspace: False
+      min: 0
+      max: 4
+      steps: 401
+
+  inner_cross_params:
+      multiple_inner_cross: True
+      inner: 1
+      cross: 0
+      relative_inner_cross: False
+      steps_inner: 101
+      steps_cross: 101
+
+
+rotation_experiment_0-1:
+  fixed:
+    norms_clean_params.values: [0.1]
+  grid:
+    sigma:
+      type: choice
+      options:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        - 0.5
+        - 1.0
+
+    norms_delta_params.values:
+      type: choice
+      options:
+        - [0.01]  # 0 degrees
+        - [0.1]  # 30 degrees
+        - [0.17]  # 60 degrees
+        - [0.1999]  # 90 degrees 
+
+
+rotation_experiment_0-5:
+  fixed:
+    norms_clean_params.values: [0.5]
+  grid:
+    sigma:
+      type: choice
+      options:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        - 0.5
+        - 1.0
+
+    norms_delta_params.values:
+      type: choice
+      options:
+        - [0.01]  # 0 degrees
+        - [0.5]  # 30 degrees
+        - [0.85]  # 60 degrees
+        - [0.9999]  # 90 degrees 
+
+
+rotation_experiment_1:
+  fixed:
+    norms_clean_params.values: [1.0]
+  grid:
+    sigma:
+      type: choice
+      options:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        - 0.5
+        - 1.0
+
+    norms_delta_params.values:
+      type: choice
+      options:
+        - [0.01]  # 0 degrees
+        - [1.0]  # 30 degrees
+        - [1.7]  # 60 degrees
+        - [1.9999]  # 90 degrees 
+
+
+rotation_experiment_2:
+  fixed:
+    norms_clean_params.values: [2.0]
+  grid:
+    sigma:
+      type: choice
+      options:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        - 0.5
+        - 1.0
+
+    norms_delta_params.values:
+      type: choice
+      options:
+        - [0.01]  # 0 degrees
+        - [2.0]  # 30 degrees
+        - [3.5]  # 60 degrees
+        - [3.9999]  # 90 degrees 
+
+
+rotation_experiment_10:
+  fixed:
+    norms_clean_params.values: [10.0]
+  grid:
+    sigma:
+      type: choice
+      options:
+        - 0.05
+        - 0.1
+        - 0.15
+        - 0.2
+        - 0.25
+        - 0.5
+        - 1.0
+
+    norms_delta_params.values:
+      type: choice
+      options:
+        - [0.01]  # 0 degrees
+        - [10.0]  # 30 degrees
+        - [17]  # 60 degrees
+        - [19.9999]  # 90 degrees 

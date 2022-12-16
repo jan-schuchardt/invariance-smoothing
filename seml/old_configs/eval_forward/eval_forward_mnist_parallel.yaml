@@ -1,0 +1,85 @@
+seml:
+  executable: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/seml/scripts/eval_forward.py
+  conda_environment: invariance_smoothing
+  project_root_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/
+  output_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/logs/slurm_out/eval_forward
+  name: eval_forward_mnist_parallel
+
+slurm:
+  experiments_per_job: 1
+  sbatch_options:
+    mem: 32G          # memory
+    cpus-per-task: 8  # num cores
+    time: 1-00:00     # max time, D-HH:MM
+    partition: ['cpu']
+    qos: 'phdcpu'
+
+
+fixed:
+
+  save_dir: /nfs/staff-ssd/schuchaj/pointcloud_invariance_results/eval_forward_parallel/
+  seed: 0
+
+  n_datapoints: 1000000
+  n_samples_per_datapoint: 1
+
+  dataset:
+      name: mnist
+      data_folder: /nfs/shared/MNIST
+      val_percentage: 0.2
+
+  pred_sample_loading:
+      collection: invariance_sample_cert
+      exp_id: None
+      restrictions:
+        train_loading.restrictions.model.model_type: pointnet
+        dataset.name: mnist
+      find_std: True
+
+  threat_model_params:
+    norms_delta_params:
+      values: [0.1]
+      linspace: True
+      min: 0
+      steps: 100
+    distribution_params:
+        parallel: True
+        angle: 0.0
+        axis_parallel: False
+
+  certificate_params:
+    n_samples_clean: 10000
+    n_samples_pert: 10000
+    alpha: 0.001
+
+grid:
+  certificate_params.preprocess_translation:
+    type: choice
+    options:
+      - True
+      - False
+
+std_0-05:
+  fixed:
+    std: 0.05
+    threat_model_params.norms_delta_params.max: 0.2
+
+std_0-1:
+  fixed:
+    std: 0.1
+    threat_model_params.norms_delta_params.max: 0.4
+
+std_0-15:
+  fixed:
+    std: 0.15
+    threat_model_params.norms_delta_params.max: 0.6
+
+std_0-20:
+  fixed:
+    std: 0.2
+    threat_model_params.norms_delta_params.max: 0.8
+
+std_0-25:
+  fixed:
+    std: 0.25
+    threat_model_params.norms_delta_params.max: 1.0

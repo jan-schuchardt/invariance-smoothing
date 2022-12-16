@@ -1,0 +1,130 @@
+seml:
+  executable: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/seml/scripts/sample_votes.py
+  conda_environment: invariance_smoothing
+  project_root_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/
+  output_dir: /nfs/homedirs/schuchaj/Programming/pointcloud_invariance_smoothing/logs/slurm_out/sample_votes
+  name: sample_dgcnn
+
+slurm:
+  experiments_per_job: 1
+  sbatch_options:
+    gres: gpu:1       # num GPUs
+    mem: 32G          # memory
+    cpus-per-task: 6  # num cores
+    time: 0-08:00     # max time, D-HH:MM
+    partition: gpu_large
+
+fixed:
+
+  save_dir: /nfs/staff-ssd/schuchaj/pointcloud_invariance_results/sample_votes
+
+
+  
+
+  sample_params:
+    n_datapoints: 10000000
+    n_samples_cert: 0
+    n_samples_pred: 1000
+    batch_size: 512
+
+  overwrite_invariance_wrapper: True
+
+  invariance_wrapper_params:
+    wrapper_type: ensemble_pca
+    random_sign: False
+    random_order: False
+
+
+modelnet_unsmoothed:
+
+  fixed:
+    dataset:
+      name: modelnet40
+      data_folder: /nfs/shared/modelnet/modelnet40_normal_resampled
+      val_percentage: 0.2
+
+    train_loading:
+      collection: invariance_train
+      exp_id: None
+      restrictions:
+        dataset.name: modelnet40
+        training_params.add_noise: False
+        model.invariance_wrapper_params.wrapper_type: single_pca
+        model.model_type: dgcnn
+      find_std: False
+
+  grid:
+    sample_params.std: 
+      type: choice
+      options:
+        - 0
+        #- 0.01
+        #- 0.02
+        #- 0.03
+        #- 0.04
+        #- 0.05
+        #- 0.06
+        #- 0.07
+        #- 0.08
+        #- 0.09
+        #- 0.1
+        #- 0.2
+        #- 0.25
+        #- 0.3
+        #- 0.4
+        #- 0.5
+        #- 0.6
+        #- 0.7
+        #- 0.75
+        #- 0.8
+        #- 0.9
+        #- 1.0
+
+
+modelnet_smoothed:
+
+  fixed:
+    dataset:
+      name: modelnet40
+      data_folder: /nfs/shared/modelnet/modelnet40_normal_resampled
+      val_percentage: 0.2
+
+    train_loading:
+      collection: invariance_train
+      exp_id: None
+      restrictions:
+        dataset.name: modelnet40
+        training_params.add_noise: True
+        model.invariance_wrapper_params.wrapper_type: single_pca
+        model.model_type: dgcnn
+      find_std: True
+
+  grid:
+    sample_params.std: 
+      type: choice
+      options:
+        - 0.01
+        - 0.02
+        - 0.03
+        - 0.04
+        - 0.05
+        - 0.06
+        - 0.07
+        - 0.08
+        - 0.09
+        - 0.1
+        - 0.125
+        - 0.15
+        - 0.175
+        - 0.2
+        - 0.225
+        - 0.25
+        - 0.3
+        - 0.4
+        - 0.5
+        - 0.6
+        - 0.7
+        - 0.75
+        - 0.8
+        - 0.9
+        - 1.0

@@ -1,0 +1,9 @@
+[submodule "reference_implementations/Pointnet_Pointnet2_pytorch"]
+	path = reference_implementations/Pointnet_Pointnet2_pytorch
+	url = https://github.com/yanx27/Pointnet_Pointnet2_pytorch
+[submodule "reference_implementations/rotation-invariant-pointcloud-analysis"]
+	path = reference_implementations/rotation-invariant-pointcloud-analysis
+	url = https://github.com/SILI1994/rotation-invariant-pointcloud-analysis.git
+[submodule "reference_implementations/dgcnn"]
+	path = reference_implementations/dgcnn
+	url = https://github.com/WangYueFt/dgcnn.git
