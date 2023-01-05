@@ -11,7 +11,10 @@ Jan Schuchardt, and Stephan Günnemann, NeurIPS 2022.
 ## Requirements
 Our main requirements are numpy, torch, torchvision and the ["Slurm Experiment Management Library (SEML)"](https://github.com/TUM-DAML/seml).
 
-We will add a complete requirements file for Conda soon.
+To install the requirements, execute
+```
+conda env create -f requirements.yaml
+```
 
 You also need to download reference implementations for different point cloud classifiers we use in our experiments,
 which can be found in the `reference implementations` subfolder.
